@@ -16,6 +16,7 @@ var startButton = document.getElementById("startButton");
 var callButton = document.getElementById("callButton");
 var hangupButton = document.getElementById("hangupButton");
 var joinButton = document.getElementById("joinButton");
+var endCallButton = document.getElementById("endCallButton");
 
 var localOffer = document.getElementById("localOffer");
 var remoteOffer = document.getElementById("remoteOffer");
@@ -34,9 +35,10 @@ var pasteRemoteAnswerButton = document.getElementById("pasteRemoteAnswerButton")
 
 startButton.disabled = false;
 callButton.disabled = true;
-hangupButton.disabled = true;
 joinButton.disabled = true;
 
+hangupButton.style.display = 'none';
+endCallButton.style.display = 'none';
 showLocalOffer.style.display = 'none';
 getRemoteOffer.style.display = 'none';
 showLocalAnswer.style.display = 'none';
@@ -46,6 +48,8 @@ startButton.onclick = start;
 callButton.onclick = call;
 joinButton.onclick = join;
 hangupButton.onclick = hangup;
+endCallButton.onclick = endCall;
+
 sentLocalOfferButton.onclick = showRemote;
 pasteRemoteOfferButton.onclick = answerCreate;
 pasteRemoteAnswerButton.onclick = answerRemote;
@@ -75,6 +79,7 @@ function gotStream(stream){
 // ALICE
 
 function call() {
+	hangupButton.style.display = 'block';
 	showLocalOffer.style.display = 'block';
 	callButton.disabled = true;
 	joinButton.disabled = true;
@@ -103,7 +108,6 @@ function gotLocalDescription(description){
   localPeerConnection.setLocalDescription(description);
   trace("Offer from localPeerConnection SDP: \n" + description.sdp);
   trace("Offer from localPeerConnection TYPE: \n" + description.type);
-  // localOffer.value = JSON.stringify(description);
 }
 
 function showRemote() {
@@ -115,15 +119,30 @@ function answerRemote() {
   getRemoteAnswer.style.display = 'none';
 	var remoteSesssionDescription = new RTCSessionDescription(JSON.parse(remoteAnswer.value));
 	localPeerConnection.setRemoteDescription(remoteSesssionDescription);
+
+	localPeerConnection.onaddstream = gotRemoteStream;
 }
 
 
 function gotLocalIceCandidate(evt){
   if (evt.candidate == null) {
-    // localPeerConnection.addIceCandidate(new RTCIceCandidate(evt.candidate));
     trace("Local ICE candidate: \n" + evt);
     localOffer.value = JSON.stringify(localPeerConnection.localDescription);
   }
+}
+
+function hangup() {
+  trace("Ending call");
+  remoteVideo.style.display = 'none';
+  hangupButton.style.display = 'none';
+  startButton.disabled = false;
+  callButton.disabled = true;
+  joinButton.disabled = true;
+
+  showLocalOffer.style.display = 'none';
+  getRemoteOffer.style.display = 'none';
+  showLocalAnswer.style.display = 'none';
+  getRemoteAnswer.style.display = 'none';
 }
 
 
@@ -131,9 +150,10 @@ function gotLocalIceCandidate(evt){
 
 function join() {
 	trace("Joining call");
+	endCallButton.style.display = 'block';
 	getRemoteOffer.style.display = 'block';
 	callButton.disabled = true;
-	hangupButton.disabled = false;
+	hangupButton.style.display = 'none';
 	joinButton.disabled = true;
 
 	remotePeerConnection = new RTCPeerConnection(servers);
@@ -157,7 +177,6 @@ function gotRemoteDescription(answerSdp) {
 	remotePeerConnection.setLocalDescription(answerSdp);
 	trace("Answer from remotePeerConnection SDP: \n" + answerSdp.sdp);
 	trace("Answer from remotePeerConnection TYPE: \n" + answerSdp.type);
-	// localAnswer.value = JSON.stringify(answerSdp);
 }
 
 function hideRemoteAnswer() {
@@ -165,47 +184,32 @@ function hideRemoteAnswer() {
 }
 
 function gotRemoteStream(evt) {
-	console.log('evt: ', evt);
 	remoteVideo.src = URL.createObjectURL(evt.stream);
 	trace("Received remote stream");
 }
 
 function gotRemoteIceCandidate(evt) {
 	if (evt.candidate) {
-	  // remotePeerConnection.addIceCandidate(new RTCIceCandidate(evt.candidate));
 	  trace("Remote ICE candidate: \n " + evt);
 	  localAnswer.value = JSON.stringify(remotePeerConnection.localDescription);
 	}
 }
 
+function endCall() {
+	trace('Ending Call');
+	endCallButton.style.display = 'none';
+	startButton.disabled = false;
+	localVideo.style.display = 'none';
+	showLocalOffer.style.display = 'none';
+	getRemoteOffer.style.display = 'none';
+	showLocalAnswer.style.display = 'none';
+	getRemoteAnswer.style.display = 'none';
+}
+
 // GENERAL USE
 
-function hangup() {
-  trace("Ending call");
-  localPeerConnection = null;
-  remotePeerConnection = null;
-  hangupButton.disabled = true;
-  callButton.disabled = false;
-  joinButton.disabled = false;
 
-  showLocalOffer.style.display = 'none';
-  getRemoteOffer.style.display = 'none';
-  showLocalAnswer.style.display = 'none';
-  getRemoteAnswer.style.display = 'none';
-}
 
 function handleError(){
 	trace("Cannot Create Offer");
-}
-
-function onsignalingstatechange(state) {
-  trace('signaling state change:', state);
-}
-
-function oniceconnectionstatechange(state) {
-  trace('ice connection state change:', state);
-}
-
-function onicegatheringstatechange(state) {
-  trace('ice gathering state change:', state);
 }
