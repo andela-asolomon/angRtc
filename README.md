@@ -12,3 +12,5 @@ a localhost because you will not be able to access the video or audio of your co
 - Remote send answer to Call via mail or IM.
 
 Voila Start Talking 
+
+Don't know what WebRTC is visit [http://www.html5rocks.com/en/tutorials/webrtc/basics/](http://www.html5rocks.com/en/tutorials/webrtc/basics/)
