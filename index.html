@@ -2,55 +2,45 @@
 <html>
 
 <head>
-
-<meta name="keywords" content="JavaScript, WebRTC" />
-<meta name="description" content="WebRTC codelab" />
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
-
-<title>WebRTC</title>
-
+  <meta name="keywords" content="JavaScript, WebRTC" />
+  <meta name="description" content="WebRTC codelab" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+  <title>WebRTC</title>
 </head>
 
 <body>
-
-<video autoplay id="alice" style="width: 450px; height: 450px;"></video>
-<video autoplay id="bob" style="width: 450px; height: 450px;"></video>
-
-<div>
-  <button id="startButton">Start</button>
-  <button id="callButton">Call</button>
-  <button id="joinButton">Join</button>
-  <button id="hangupButton">Hang Up</button>
-  <button id="endCallButton">End Call</button>
-
-  <br>
-  
-  <div id="showLocalOffer">
-  	<textarea rows="5" cols="50" id="localOffer">localOffer</textarea><br>
-  	<button id="sentLocalOfferButton">Sent Local Offer</button>
+  <video autoplay id="alice" style="width: 450px; height: 450px;"></video>
+  <video autoplay id="bob" style="width: 450px; height: 450px;"></video>
+  <div>
+    <button id="startButton">Start</button>
+    <button id="callButton">Call</button>
+    <button id="joinButton">Join</button>
+    <button id="hangupButton">Hang Up</button>
+    <button id="endCallButton">End Call</button>
+    <br>
+    <div id="showLocalOffer">
+      <textarea rows="5" cols="50" id="localOffer">localOffer</textarea>
+      <br>
+      <button id="sentLocalOfferButton">Sent Local Offer</button>
+    </div>
+    <div id="getRemoteOffer">
+      <textarea rows="5" cols="50" id="remoteOffer">remoteOffer</textarea>
+      <br>
+      <button id="pasteRemoteOfferButton">Paste Remote Offer</button>
+    </div>
+    <div id="showLocalAnswer">
+      <textarea rows="5" cols="50" id="localAnswer">localAnswer</textarea>
+      <br>
+      <button id="sentLocalAnswerButton">Sent Local Answer</button>
+    </div>
+    <div id="getRemoteAnswer">
+      <textarea rows="5" cols="50" id="remoteAnswer">remoteAnswer</textarea>
+      <br>
+      <button id="pasteRemoteAnswerButton">Paste Remote Answer</button>
+    </div>
   </div>
-
-  <div id="getRemoteOffer">
-  	<textarea rows="5" cols="50" id="remoteOffer">remoteOffer</textarea><br>
-  	<button id="pasteRemoteOfferButton">Paste Remote Offer</button>
-  </div>
-
-  <div id="showLocalAnswer">
-  	<textarea rows="5" cols="50" id="localAnswer">localAnswer</textarea><br>
-  	<button id="sentLocalAnswerButton">Sent Local Answer</button>
-  </div>
-
-  <div id="getRemoteAnswer">
-  	<textarea rows="5" cols="50" id="remoteAnswer">remoteAnswer</textarea><br>
-  	<button id="pasteRemoteAnswerButton">Paste Remote Answer</button>
-  </div>
-  
-
-</div>
-    
-	<script src='js/adapter.js'></script>
-	<script src="js/app.js"></script>
-
+  <script src='js/adapter.js'></script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>
